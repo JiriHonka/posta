@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Odeslání zásilky{% endblock %}
+
+{% block content %}
+<h1>Odeslání zásilky</h1>
+
+<form method="post" novalidate>
+    {% for field, label in {
+        'sender_name':'Jméno odesílatele',
+        'sender_address':'Adresa odesílatele',
+        'sender_zip':'PSČ odesílatele',
+        'recipient_name':'Jméno příjemce',
+        'recipient_address':'Adresa příjemce',
+        'recipient_zip':'PSČ příjemce'
+    }.items() %}
+        <label>{{ label }}
+            <input type="text" name="{{ field }}" value="{{ form.get(field,'') }}">
+        </label>
+        <span class="error">{{ errors.get(field) }}</span>
+    {% endfor %}
+
+    <label>Hmotnost (kg)
+        <input type="number" step="0.01" name="weight" value="{{ form.get('weight','') }}">
+    </label>
+    <span class="error">{{ errors.get("weight") }}</span>
+
+    <label>Typ zásilky
+        <select name="shipment_type">
+            <option value="">-- vyberte --</option>
+            <option value="balik">Balík</option>
+            <option value="dopis">Dopis</option>
+            <option value="cenny">Cenný balík</option>
+        </select>
+    </label>
+    <span class="error">{{ errors.get("shipment_type") }}</span>
+
+    <label>
+        <input type="checkbox" name="insurance"> Pojištění
+    </label>
+
+    <label>Poznámka
+        <textarea name="note" maxlength="200">{{ form.get("note","") }}</textarea>
+    </label>
+    <span class="error">{{ errors.get("note") }}</span>
+
+    <a href="{{ url_for('success') }}"><button type="button">Odeslat</button></a>
+</form>
+{% endblock %}
